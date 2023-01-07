@@ -1,0 +1,9 @@
+{
+    "prod": {
+      "EntryPoints": "index.js",
+      "Outfile": "out4.js",
+      "Bundle": "true",
+      "Write": "true",
+      "External": ["*.png", "/images/*"]
+    }
+}
