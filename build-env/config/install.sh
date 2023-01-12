@@ -1,5 +1,5 @@
 install(){
-    cp -r config/.yale ~/
+    cp -r .yale ~/
 }
 
 install
