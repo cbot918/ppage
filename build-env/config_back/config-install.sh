@@ -1,4 +1,4 @@
-install(){
+config-install(){
     cp -r .yale ~/
 }
 
