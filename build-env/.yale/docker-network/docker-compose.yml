@@ -1,0 +1,22 @@
+version: "3.9"
+
+networks:
+  yale-test:
+    driver: bridge
+    name: yale-test
+    
+services:    
+  web:
+    image: ex_webi
+    container_name: ex_webc
+    build: 
+      context: .
+      dockerfile: ./Dockerfile
+    hostname: a.b.c
+    networks:
+      - yale-test
+    ports:
+      - 5056
+  
+    
+    
