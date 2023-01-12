@@ -1,3 +1,13 @@
+### some comment for wrap setting
+# alias sou="source ~/.bashrc"
+
+# if [ -f ~/.yale/.bash_yale ]; then
+# 		. ~/.yale/.bash_yale
+# fi
+
+
+
+
 
 
 ##git
