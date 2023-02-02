@@ -88,17 +88,7 @@ func parse(input []token) node {
 	}
 
 	for pc < len(input) {
-		// ast.body = append(ast.body, walk(input))
-		if input[pc].kind == "paren" {
-			pc++
-			continue
-		}
-		if input[pc].kind == "name" {
-
-			ast.body = append(ast.body, walk(input))
-		}
-
-		pc++
+		ast.body = append(ast.body, walk(input))
 	}
 
 	return ast
@@ -107,7 +97,6 @@ func parse(input []token) node {
 func walk(input []token) node {
 
 	if input[pc].kind == "number" {
-		fmt.Println("in number")
 		n := node{
 			kind:  "NumberLiteral",
 			value: input[pc].value,
@@ -116,16 +105,36 @@ func walk(input []token) node {
 		return n
 	}
 
-	if input[pc].kind == "name" {
-		fmt.Println("pc: ", pc)
-		n := node{
-			kind: "CallExpression",
-			name: input[pc].value,
-		}
+	if input[pc].kind == "paren" && input[pc].value == "(" {
 		pc++
-		n.params = append(n.params, walk(input))
+
+		n := node{
+			kind:   "CallExpression",
+			name:   input[pc].value,
+			params: []node{},
+		}
+
+		pc++
+
+		for input[pc].kind != "paren" || (input[pc].kind == "paren" && input[pc].value != ")") {
+			n.params = append(n.params, walk(input))
+		}
+		pc++ //skip closing
+
 		return n
+
 	}
+
+	// if input[pc].kind == "name" {
+	// 	fmt.Println("pc: ", pc)
+	// 	n := node{
+	// 		kind: "CallExpression",
+	// 		name: input[pc].value,
+	// 	}
+	// 	pc++
+	// 	n.params = append(n.params, walk(input))
+	// 	return n
+	// }
 
 	// pc++
 	return node{}
@@ -140,7 +149,7 @@ func main() {
 
 	ast := parse(tokens)
 	fmt.Println("ast")
-	// fmt.Printf("%+v\n", ast)
-	fmt.Println(ast)
+	fmt.Printf("%+v\n", ast)
+	// fmt.Println(ast)
 	// fmt.Println(json.MarshalIndent(ast, "", "    "))
 }

@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <div id="app"></div>
+  <script>
+    
+    function createStore(reducer){
+      let state = reducer()
+      let eventhub = []
+
+      function getState(){
+        return state
+      }
+
+      function dispatch(action){
+        console.log("in dispatch")
+        state = reducer(state, action)
+        eventhub.forEach(i=>i())
+      }
+
+      function subscribe(fn){
+        console.log("in subscribe")
+        eventhub.push(fn)
+      }
+      
+      function test(){
+        return 555
+      }
+      
+
+      return {
+        subscribe,
+        dispatch,
+        getState,
+        test
+      }
+
+    }
+
+    function reducer(state=0, action){
+      return action?.type == "plus"
+        ? state + action.payload
+        : action?.type == "minus"
+        ? state - action.parload
+        : state;
+    }
+
+    function add(){
+      s.dispatch({type:"plus", payload:3})
+    }
+
+    let s = createStore(reducer)
+    function render(s){
+      let app = document.querySelector("#app")
+      app.innerHTML = `
+        <div> hihi </div>
+        <div> ${s.getState()} </div>
+        <input id="addButton" type="button" value="+3"/>
+      `
+      app.addEventListener("click", add)
+    }
+
+    render(s)
+    s.subscribe(()=>{
+      render(s)
+    })
+    function add(){
+      console.log("hihi")
+      s.dispatch({type:"plus", payload:3})
+    }
+  </script>
+</body>
+</html>
