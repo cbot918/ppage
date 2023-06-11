@@ -6,13 +6,15 @@ import (
 )
 
 const (
-	PRINT      = "print"
-	LEFTPAREN  = "("
-	RIGHTPAREN = ")"
+	PRINT      = "PRINT"
+	LEFTPAREN  = "LEFTPAREN"
+	RIGHTPAREN = "RIGHTPAREN"
+	LITERAL    = "LITERAL"
 )
 
 var (
-	log = fmt.Println
+	log      = fmt.Println
+	LITERALS = []string{}
 )
 
 var (
@@ -64,7 +66,9 @@ func GetStrings(content string) []string {
 			count += 1
 		}
 
+		// some issue
 		if string(content[count]) == "\"" {
+			log("hi")
 			count += 1
 			temp = ""
 			for isString(content[count]) {
@@ -98,7 +102,8 @@ func GetTokens(strings []string) []string {
 			}
 		default:
 			{
-				temp = append(temp, "STRING_LITERAL")
+				temp = append(temp, LITERAL)
+				LITERALS = append(LITERALS, item)
 			}
 		}
 	}
@@ -106,11 +111,26 @@ func GetTokens(strings []string) []string {
 	return temp
 }
 
-func GetAst() {}
+// func GetAst() {}
 
-func Process() {}
+func Process(tokens []string) {
+	for _, item := range tokens {
+		if item == PRINT {
+			execPrint(tokens[1:])
+		}
+	}
+}
+
+// workaround
+func execPrint(tokens []string) {
+	toks := tokens
+	toks = toks[1:]
+	// fmt.Println("node: ", toks[0])
+	fmt.Println(LITERALS[0])
+}
 
 func main() {
+	log("")
 	program := GetContent(fileName)
 
 	strings := GetStrings(program)
@@ -118,5 +138,7 @@ func main() {
 
 	tokens := GetTokens(strings)
 	log("tokens: ", tokens)
-	// SkipWhitespace()
+
+	log("")
+	Process(tokens)
 }
