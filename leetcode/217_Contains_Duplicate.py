@@ -15,8 +15,10 @@ class Solution:
         j = 0
         while i < len(nums):
           j = i + 1
-          flag = nums[i]
           while j < len(nums):
+            if [nums[j]] == nums[i]:
+              return True
+              
              
           
 
